@@ -1,5 +1,8 @@
 # Determine Quality of Exercise Movement and Form by Analyzing Data from Wearable Fitness Trackers
 
+Rob Alderman  
+May, 2015
+
 ### Abstract
 
 In this report we analyze data collected by fitness trackers attached 
