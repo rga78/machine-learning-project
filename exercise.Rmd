@@ -36,11 +36,11 @@ in five different fashions:
 
 Class A is the correct form; classes B through E are common mistakes.
 
-The sensor data is provided here: [https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv)
+The sensor data are provided here: [https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv)
 
-More information about the sensor data and how it was collected can be found here: [http://groupware.les.inf.puc-rio.br/har](http://groupware.les.inf.puc-rio.br/har)
+More information about the sensor dataset and how it was collected can be found here: [http://groupware.les.inf.puc-rio.br/har](http://groupware.les.inf.puc-rio.br/har)
 
-The sensor data includes the raw data from a gyroscope, accelerometer, and magnetometer placed
+The sensor data include the raw data from a gyroscope, accelerometer, and magnetometer placed
 at each of the four points on the body, along with roll, yaw, and pitch angles derived from 
 that data.  The dataset also includes data summarized across time slices, such as average, variance, 
 min and max, etc, of the roll, yaw, and pitch angles.  The summary data, however, will not be
@@ -56,7 +56,7 @@ along with the classe variable, which is the outcome we're trying to predict.  T
 classe variable is one of A,B,C,D,E, corresponding to the fashion in which the 
 exercise was performed.
 
-The data is partitioned into a training dataset and testing dataset, using a
+The data are partitioned into a training dataset and testing dataset, using a
 60/40 split.  The model will be trained on the training dataset, then applied
 to the testing dataset to see how well the model applies to data it has not 
 been trained on.
