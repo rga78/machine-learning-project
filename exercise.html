@@ -219,12 +219,12 @@ It was able to predict the fashion in which the exercise was performed
 with a 98.5% accuracy rate.  The applications for such a qualitative model 
 are clear, not only for sports training, where feedback on form can be provided
 in real-time, but also for other applications where movement and form are central
-factors, such as physical rehabilitiation.</p>
+factors, such as physical rehabilitation.</p>
 
 <h3>Introduction and Data Sources</h3>
 
 <p>The objective is to build a model that can predict the quality of an exercise movement,
-specifically a unilateral dumbbell bicep curl, using the data read from motions sensors
+specifically a unilateral dumbbell bicep curl, using the data read from motion sensors
 placed on four parts of the body: the belt, the upper arm, the forearm, and the hand.
 The model is built using a machine learning algorithm based off a training set of
 sensor data collected from six subjects performing ten repetitions of the bicep curl
@@ -254,8 +254,8 @@ used in our prediction models.</p>
 
 <p>There are 160 variables in the dataset.  Including them all in the prediction model
 would make training the model a very time consuming task.  So we reduce the number
-of variables by filtering out everything except the roll, yaw, and pitch angles,
-along with the classe variable, which is the outcome we&#39;re trying to predict.  The
+of variables by filtering out everything except the <strong>roll</strong>, <strong>yaw</strong>, and <strong>pitch</strong> angles,
+along with the <strong>classe</strong> variable, which is the outcome we&#39;re trying to predict.  The
 classe variable is one of A,B,C,D,E, corresponding to the fashion in which the 
 exercise was performed.</p>
 
@@ -380,7 +380,7 @@ the actual classe data has been removed.  However, we can &ldquo;hack&rdquo; the
 the actual classe for each case by using the num_window variable.  The num_window
 variable is an index for the time slice.  Each time slice corresponds to a single
 performance of the exercise and therefore corresponds uniquely to a single classe
-(or fashion) by which the exercise was performed. We can apply this hack to our 
+(fashion) by which the exercise was performed. We can apply this hack to our 
 set-aside testing dataset to reveal the actual classe of each case.  Then we
 can compare the actual classe to that predicted by our model.</p>
 
