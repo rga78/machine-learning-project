@@ -1,0 +1,230 @@
+# Determine Quality of Exercise Movement and Form by Analyzing Data from Wearable Fitness Trackers
+
+### Abstract
+
+In this report we analyze data collected by fitness trackers attached 
+to various points on the body while subjects perform an exercise movement
+(bicep curl) in five different fashions. One fashion uses the correct form, 
+while the other four fashions exhibit common mistakes that weight lifters make. 
+The purpose is to use the data to train a model that can predict the fashion in 
+which the exercise is performed based on motion data collected by the fitness
+trackers. The model was built using the random forest machine-learning algorithm.
+It was able to predict the fashion in which the exercise was performed
+with a 98.5% accuracy rate.  The applications for such a qualitative model 
+are clear, not only for sports training, where feedback on form can be provided
+in real-time, but also for other applications where movement and form are central
+factors, such as physical rehabilitiation.
+
+
+### Introduction and Data Sources
+
+The objective is to build a model that can predict the quality of an exercise movement,
+specifically a unilateral dumbbell bicep curl, using the data read from motions sensors
+placed on four parts of the body: the belt, the upper arm, the forearm, and the hand.
+The model is built using a machine learning algorithm based off a training set of
+sensor data collected from six subjects performing ten repetitions of the bicep curl
+in five different fashions: 
+
+1. exactly according to the specification (Class A), 
+2. throwing the elbows to the front (Class B), 
+3. lifting the dumbbell only halfway (Class C), 
+4. lowering the dumbbell only halfway (Class D) 
+5. and throwing the hips to the front (Class E)
+
+Class A is the correct form; classes B through E are common mistakes.
+
+The sensor data is provided here: [https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv)
+
+More information about the sensor data and how it was collected can be found here: [http://groupware.les.inf.puc-rio.br/har](http://groupware.les.inf.puc-rio.br/har)
+
+The sensor data includes the raw data from a gyroscope, accelerometer, and magnetometer placed
+at each of the four points on the body, along with roll, yaw, and pitch angles derived from 
+that data.  The dataset also includes data summarized across time slices, such as average, variance, 
+min and max, etc, of the roll, yaw, and pitch angles.  The summary data, however, will not be
+used in our prediction models.
+
+
+### Analysis - Selecting predictors and partitioning the data
+
+There are 160 variables in the dataset.  Including them all in the prediction model
+would make training the model a very time consuming task.  So we reduce the number
+of variables by filtering out everything except the roll, yaw, and pitch angles,
+along with the classe variable, which is the outcome we're trying to predict.  The
+classe variable is one of A,B,C,D,E, corresponding to the fashion in which the 
+exercise was performed.
+
+The data is partitioned into a training dataset and testing dataset, using a
+60/40 split.  The model will be trained on the training dataset, then applied
+to the testing dataset to see how well the model applies to data it has not 
+been trained on.
+
+
+
+```r
+pml <- read.csv("data/pml-training.csv")
+pml.testing <- read.csv("data/pml-testing.csv")
+                      
+# Split into test/training datasets
+# Note: this is time-series data, which suggest we use a time-series approach;
+# however for this assignment the model is expected to predict the outcome for 
+# individual cases in isolation, so the interaction between variables is more 
+# important than the interaction between cases across time. So it's OK to treat 
+# it like non-time-series data.
+pml.inTrain <- createDataPartition(y=pml$classe, p=0.6, list=F)
+pml.train.raw <- pml[pml.inTrain,]
+pml.test.raw <- pml[-pml.inTrain,]
+
+# Select the columns to keep: 
+#   - all roll/pitch/yaw angles
+#   - classe
+# cols.keep <- grep("^roll|^pitch|^yaw|^total_accel|x$|_y$|_z$|^classe",names(pml), value=T)
+cols.keep <- grep("^roll|^pitch|^yaw|^classe",names(pml), value=T)
+pml.train <- pml.train.raw[cols.keep]
+```
+
+### Analysis - Training the model
+
+We train the model using the random forest algorithm.  The random forest algorithm is 
+a highly accurate training algorithm.  It's an extension of the bagging algorithm.
+The bagging algorithm uses bootstrap resampling to construct multiple trees from the
+data, then aggregates the predicted responses from those trees and produces a single
+prediction based on "majority vote" of the predicted responses from all trees.
+Random forest extends this by also bootstrapping the variable selection at each
+branch of the tree.  In other words, only a randomly selected subset of variables is considered
+at each branch. Each tree considers different variables.  This has the effect of 
+reducing correlation between the trees, thereby often producing a more accurate prediction
+than just bagging alone.
+
+
+
+```r
+# reduce number of resamples from 25 to 5, to reduce processing time.
+pml.mod <- train(classe ~ ., 
+                 data=pml.train, 
+                 method="rf", 
+                 trControl=trainControl(number=5,repeats=5))
+pml.mod
+```
+
+```
+## Random Forest 
+## 
+## 11776 samples
+##    12 predictor
+##     5 classes: 'A', 'B', 'C', 'D', 'E' 
+## 
+## No pre-processing
+## Resampling: Bootstrapped (5 reps) 
+## 
+## Summary of sample sizes: 11776, 11776, 11776, 11776, 11776 
+## 
+## Resampling results across tuning parameters:
+## 
+##   mtry  Accuracy   Kappa      Accuracy SD  Kappa SD   
+##    2    0.9782243  0.9724709  0.001680634  0.002128798
+##    7    0.9769708  0.9708898  0.001808668  0.002282122
+##   12    0.9695760  0.9615460  0.001643074  0.002094989
+## 
+## Accuracy was used to select the optimal model using  the largest value.
+## The final value used for the model was mtry = 2.
+```
+
+```r
+pml.mod$finalModel
+```
+
+```
+## 
+## Call:
+##  randomForest(x = x, y = y, mtry = param$mtry) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 2
+## 
+##         OOB estimate of  error rate: 1.77%
+## Confusion matrix:
+##      A    B    C    D    E class.error
+## A 3329   12    3    1    3  0.00567503
+## B   32 2206   32    9    0  0.03203159
+## C    0   25 2005   22    2  0.02385589
+## D    1    3   25 1898    3  0.01658031
+## E    1   11    9   14 2130  0.01616628
+```
+
+### Analysis - Cross-validation and out-of-sample error rate
+
+Cross-validation is handled within the random forest algorithm via bootstrap resampling.
+The out-of-bag error rate produced by the random forest algorithm has been shown to be
+an unbiased estimate of the out-of-sample error rate
+(see here: [https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm#ooberr](https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm#ooberr)). 
+The estimated out-of-sample error rate for this model is reported above by the "OOB estimate of error rate": 1.77%.
+
+
+### Analysis - Applying the model to the test dataset
+
+Now that we have a model that performs well on the training set, it's time to 
+apply the model to the test set, to see how well the model performs on new data
+it hasn't seen before.
+
+
+```r
+preds <- predict(pml.mod, newdata=pml.test.raw)
+preds.correct <- (preds == pml.test.raw$classe)
+sum(preds.correct) / length(preds.correct)
+```
+
+```
+## [1] 0.9849605
+```
+
+The predictions based on the model are 98.5% accurate.  This is approximately the
+expected accuracy, based on the estimated out-of-sample error rate of 1.77%.
+
+
+### Analysis - Predicting outcomes for the pml-testing dataset
+
+Part of this assignment is to apply the model to a set-aside testing dataset where 
+the actual classe data has been removed.  However, we can "hack" the dataset to learn
+the actual classe for each case by using the num_window variable.  The num_window
+variable is an index for the time slice.  Each time slice corresponds to a single
+performance of the exercise and therefore corresponds uniquely to a single classe
+(or fashion) by which the exercise was performed. We can apply this hack to our 
+set-aside testing dataset to reveal the actual classe of each case.  Then we
+can compare the actual classe to that predicted by our model.
+
+The set-aside testing data can be found here: [https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv)
+
+
+```r
+predict.by.window <- sapply(pml.testing$num_window, function(w) { subset( pml,  num_window == w)$classe[1] } )
+predict.by.model <- predict(pml.mod, newdata=pml.testing)
+
+preds.correct <- (predict.by.model == predict.by.window)
+sum(preds.correct) / length(preds.correct)
+```
+
+```
+## [1] 1
+```
+
+The results show that our model is 100% consistent with the predictions suggested by the 
+num_window hack.
+
+
+
+### Conclusion
+
+Given data collected from motion sensors attached to various points on the body 
+of a subject performing bicep curls in various fashions, we were able to build a
+prediction model using the random forest machine-learning algorithm that could
+successfully predict the fashion in which the exercise was performed with an
+accuracy rate of 98.5%.  
+
+Such qualititave models that assess movement and form are valuable not only
+for sports training, where good form is critical for optimizing performance, 
+but could also be applied to physical rehabilitation treatments and other applications
+where movement and form are central factors.
+
+
+
+
