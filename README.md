@@ -1,4 +1,4 @@
-## Practical Machine Learning Course Project
+## Practical Machine Learning 
 
 Course page: [https://class.coursera.org/predmachlearn-014](https://class.coursera.org/predmachlearn-014)
 
