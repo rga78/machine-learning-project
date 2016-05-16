@@ -1,5 +1,5 @@
 
-# Coursera: Practical Machine Learning: Week 4
+# Coursera: Practical Machine Learning: Week 4: Combining Models, Forecasting
 
 [https://class.coursera.org/predmachlearn-014/lecture](https://class.coursera.org/predmachlearn-014/lecture)
 

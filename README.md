@@ -1,9 +1,9 @@
-## Practical Machine Learning 
+## Coursera: Practical Machine Learning 
 
 Course page: [https://class.coursera.org/predmachlearn-014](https://class.coursera.org/predmachlearn-014)
 
 
-## [Week 1](week1.md)
+## [Week 1: Prediction Models](week1.md)
 
 ### Components of a predictor
 ### In sample vs. out of sample error
@@ -13,7 +13,7 @@ Course page: [https://class.coursera.org/predmachlearn-014](https://class.course
 ### Cross-Validation
 
 
-## [Week 2](week2.md)
+## [Week 2: Building Prediction Models in R](week2.md)
 
 ### R: caret package functionality: 
 ### Machine Learning Algorithms in R
@@ -24,16 +24,16 @@ Course page: [https://class.coursera.org/predmachlearn-014](https://class.course
 ### Quiz #2 
 
 
-## [Week 3](week3.md)
+## [Week 3: Classification, Bagging, Random Forests](week3.md)
 
 ### Classification Trees
 ### Bagging / Bootstrap Aggregating
 ### Random Forests
 ### Quiz 3
 
-## [Week 4](week4.md)
+## [Week 4: Combining Models, Forecasting](week4.md)
 
-### Regularized Regression: 
+### Regularized Regression
 ### Combining prediction models
 ### Forecasting
 ### Quiz 4 

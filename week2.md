@@ -1,5 +1,5 @@
 
-# Coursera: Practical Machine Learning: Week 2
+# Coursera: Practical Machine Learning: Week 2: Building Prediction Models in R
 
 [https://class.coursera.org/predmachlearn-014/lecture](https://class.coursera.org/predmachlearn-014/lecture)
 

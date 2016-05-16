@@ -1,5 +1,5 @@
 
-# Coursera: Practical Machine Learning: Week 3
+# Coursera: Practical Machine Learning: Week 3: Classification, Bagging, Random Forests
 
 [https://class.coursera.org/predmachlearn-014/lecture](https://class.coursera.org/predmachlearn-014/lecture)
 

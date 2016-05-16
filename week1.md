@@ -1,5 +1,5 @@
 
-# Coursera: Practical Machine Learning: Week 1
+# Coursera: Practical Machine Learning: Week 1: Prediction Models
 
 [https://class.coursera.org/predmachlearn-014/lecture](https://class.coursera.org/predmachlearn-014/lecture)
 
